@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloxRisks - Robux Gambling Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff9500;
+            --secondary: #1e1e1e;
+            --accent: #ff5e00;
+            --text: #f0f0f0;
+            --dark: #121212;
+            --darker: #0a0a0a;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary);
+        }
+        
+        .text-primary {
+            color: var(--primary);
+        }
+        
+        .border-primary {
+            border-color: var(--primary);
+        }
+        
+        .bg-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .hover\:bg-primary:hover {
+            background-color: var(--primary);
+        }
+        
+        .game-card {
+            transition: all 0.3s ease;
+            background-color: var(--secondary);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .balance-card {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--darker) 100%);
+            border: 1px solid rgba(255, 149, 0, 0.2);
+        }
+        
+        .chat-message {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            transition: width 0.5s ease;
+        }
+        
+        .multiplier-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 149, 0, 0.7);
+        }
+        
+        .crash-graph {
+            height: 200px;
+            background: linear-gradient(180deg, rgba(30,30,30,0.8) 0%, rgba(18,18,18,0.9) 100%);
+        }
+        
+        .graph-line {
+            stroke: var(--primary);
+            stroke-width: 2;
+            fill: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header/Navbar -->
+    <header class="bg-secondary border-b border-gray-800 fixed w-full z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <a href="#" class="text-2xl font-bold text-primary flex items-center">
+                    <i class="fas fa-dice mr-2"></i>
+                    BloxRisks
+                </a>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#" class="nav-link text-white hover:text-primary">Home</a>
+                    <a href="#" class="nav-link text-white hover:text-primary">Games</a>
+                    <a href="#" class="nav-link text-white hover:text-primary">Live</a>
+                    <a href="#" class="nav-link text-white hover:text-primary">VIP</a>
+                    <a href="#" class="nav-link text-white hover:text-primary">Promotions</a>
+                    <a href="#" class="nav-link text-white hover:text-primary">Leaderboards</a>
+                </nav>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="bg-primary hover:bg-opacity-90 text-black font-medium px-4 py-2 rounded-md flex items-center">
+                    <i class="fas fa-wallet mr-2"></i>
+                    Deposit
+                </button>
+                <button class="bg-transparent border border-primary text-primary hover:bg-primary hover:text-black font-medium px-4 py-2 rounded-md">
+                    Login
+                </button>
+                <button class="text-white hover:text-primary">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-16 pb-20">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-secondary to-darker py-12">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-8 md:mb-0">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-4">Play & Win <span class="text-primary">Robux</span></h1>
+                        <p class="text-xl mb-6 text-gray-300">The most trusted Robux gambling platform with provably fair games</p>
+                        <div class="flex space-x-4">
+                            <button class="bg-primary hover:bg-opacity-90 text-black font-bold px-6 py-3 rounded-md">
+                                Get Started
+                            </button>
+                            <button class="bg-transparent border border-primary text-primary hover:bg-primary hover:text-black font-bold px-6 py-3 rounded-md">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center">
+                        <div class="relative w-full max-w-md">
+                            <div class="absolute -top-4 -left-4 w-32 h-32 bg-primary rounded-full opacity-20"></div>
+                            <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-primary rounded-full opacity-20"></div>
+                            <div class="relative bg-secondary p-6 rounded-xl shadow-xl">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-xl font-bold">Your Balance</h3>
+                                    <span class="text-primary font-mono">0.00 R$</span>
+                                </div>
+                                <div class="mb-6">
+                                    <div class="flex justify-between text-sm text-gray-400 mb-1">
+                                        <span>Wagered</span>
+                                        <span>0 R$</span>
+                                    </div>
+                                    <div class="progress-bar rounded-full overflow-hidden">
+                                        <div class="progress-fill rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <button class="bg-primary hover:bg-opacity-90 text-black font-medium py-2 rounded-md">
+                                        <i class="fas fa-plus mr-2"></i> Deposit
+                                    </button>
+                                    <button class="bg-transparent border border-primary text-primary hover:bg-primary hover:text-black font-medium py-2 rounded-md">
+                                        <i class="fas fa-exchange-alt mr-2"></i> Withdraw
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Games Section -->
+        <section class="py-12">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-8 text-center">Popular Games</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Crash Game -->
+                    <div class="game-card rounded-xl overflow-hidden shadow-lg">
+                        <div class="relative">
+                            <img src="https://via.placeholder.com/400x200/1e1e1e/ff9500?text=CRASH" alt="Crash Game" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-primary text-black px-3 py-1 rounded-full text-sm font-bold">
+                                HOT
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-xl font-bold mb-2">Crash</h3>
+                            <p class="text-gray-400 mb-4">Cash out before the rocket crashes!</p>
+                            <button class="w-full bg-primary hover:bg-opacity-90 text-black font-medium py-2 rounded-md">
+                                Play Now
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Dice Game -->
+                    <div class="game-card rounded-xl overflow-hidden shadow-lg">
+                        <div class="relative">
+                            <img src="https://via.placeholder.com/400x200/1e1e1e/ff9500?text=DICE" alt="Dice Game" class="w-full h-48 object-cover">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-xl font-bold mb-2">Dice</h3>
+                            <p class="text-gray-400 mb-4">Predict the dice roll outcome</p>
+                            <button class="w-full bg-primary hover:bg-opacity-90 text-black font-medium py-2 rounded-md">
+                                Play Now
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Roulette Game -->
+                    <div class="game-card rounded-xl overflow-hidden shadow-lg">
+                        <div class="relative">
+                            <img src="https://via.placeholder.com/400x200/1e1e1e/ff9500?text=ROULETTE" alt="Roulette Game" class="w-full h-48 object-cover">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-xl font-bold mb-2">Roulette</h3>
+                            <p class="text-gray-400 mb-4">Classic roulette with Robux bets</p>
+                            <button class="w-full bg-primary hover:bg-opacity-90 text-black font-medium py-2 rounded-md">
+                                Play Now
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Mines Game -->
+                    <div class="game-card rounded-xl overflow-hidden shadow-lg">
+                        <div class="relative">
+                            <img src="https://via.placeholder.com/400x200/1e1e1e/ff9500?text=MINES" alt="Mines Game" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-primary text-black px-3 py-1 rounded-full text-sm font-bold">
+                                NEW
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-xl font-bold mb-2">Mines</h3>
+                            <p class="text-gray-400 mb-4">Find gems and avoid mines</p>
+                            <button class="w-full bg-primary hover:bg-opacity-90 text-black font-medium py-2 rounded-md">
+                                Play Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Crash Game Preview -->
+        <section class="py-12 bg-secondary">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-8 text-center">Live Crash Game</h2>
+                <div class="bg-darker rounded-xl p-6 shadow-xl">
+                    <div class="flex flex-col lg:flex-row gap-6">
+                        <!-- Game Area -->
+                        <div class="lg:w-2/3">
+                            <div class="crash-graph rounded-lg mb-4 relative overflow-hidden">
+                                <svg width="100%" height="100%" id="crash-graph-svg">
+                                    <path class="graph-line" d="M0,200 L100,180 L200,150 L300,120 L400,100 L500,80 L600,60 L700,40 L800,20 L900,10 L1000,0" />
+                                </svg>
+                                <div class="absolute top-4 left-4">
+                                    <div class="text-sm text-gray-400">Current Multiplier</div>
+                                    <div class="multiplier-display text-primary">1.00x</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between mb-4">
+                                <div>
+                                    <div class="text-sm text-gray-400">Players</div>
+                                    <div class="text-xl font-bold">1,245</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-400">Total Bet</div>
+                                    <div class="text-xl font-bold">245,678 R$</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-400">Next Round</div>
+                                    <div class="text-xl font-bold">12s</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Betting Area -->
+                        <div class="lg:w-1/3">
+                            <div class="mb-4">
+                                <label class="block text-gray-400 mb-2">Bet Amount (R$)</label>
+                                <div class="relative">
+                                    <input type="number" class="w-full bg-secondary border border-gray-700 rounded-md py-2 px-4 text-white focus:outline-none focus:border-primary" placeholder="0.00">
+                                    <div class="absolute right-3 top-2 flex space-x-1">
+                                        <button class="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded">1/2</button>
+                                        <button class="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded">2x</button>
+                                        <button class="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded">Max</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-400 mb-2">Auto Cashout</label>
+                                <div class="relative">
+                                    <input type="number" class="w-full bg-secondary border border-gray-700 rounded-md py-2 px-4 text-white focus:outline-none focus:border-primary" placeholder="1.00x">
+                                    <div class="absolute right-3 top-2 flex space-x-1">
+                                        <button class="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded">1.1x</button>
+                                        <button class="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded">1.5x</button>
+                                        <button class="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded">2x</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="w-full bg-primary hover:bg-opacity-90 text-black font-bold py-3 rounded-md mb-4">
+                                Place Bet
+                            </button>
+                            <div class="flex justify-between text-sm text-gray-400">
+                                <span>Min Bet: 0.10 R$</span>
+                                <span>Max Bet: 10,000 R$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Wins Section -->
+        <section class="py-12">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-8 text-center">Recent Wins</h2>
+                <div class="bg-secondary rounded-xl p-6 overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700 text-gray-400">
+                                <th class="pb-3 text-left">Player</th>
+                                <th class="pb-3 text-left">Game</th>
+                                <th class="pb-3 text-left">Bet</th>
+                                <th class="pb-3 text-left">Multiplier</th>
+                                <th class="pb-3 text-left">Profit</th>
+                                <th class="pb-3 text-left">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-800 hover:bg-gray-800">
+                                <td class="py-3">RobloxPro123</td>
+                                <td class="py-3">Crash</td>
+                                <td class="py-3">500 R$</td>
+                                <td class="py-3 text-primary">8.76x</td>
+                                <td class="py-3">4,380 R$</td>
+                                <td class="py-3 text-gray-400">2 minutes ago</td>
+                            </tr>
+                            <tr class="border-b border-gray-800 hover:bg-gray-800">
+                                <td class="py-3">Builderman</td>
+                                <td class="py-3">Dice</td>
+                                <td class="py-3">1,200 R$</td>
+                                <td class="py-3 text-primary">2.5x</td>
+                                <td class="py-3">3,000 R$
